@@ -2,6 +2,9 @@
 """ azrfezaazdzad """
 
 
-def sum_list(input_list: list) -> float:
+from typing import List
+
+
+def sum_list(input_list: List[float]) -> float:
     """ azrfezaazdzad """
     return sum(input_list)
