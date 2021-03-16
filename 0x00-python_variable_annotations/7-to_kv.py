@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from typing import Union
+from typing import Union, Tuple
 import math
 
-def to_kv (k: str, v: Union[int, float]) -> tuple:
-    return (k , float(v ** 2))
+def to_kv (k: str, v: Union[int, float]) -> Tuple[str, float]:
+    return (k , v ** 2)
