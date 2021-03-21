@@ -20,7 +20,7 @@ class FIFOCache(BaseCaching):
             if key not in self.keys:
                 print("DISCARD: {}".format(self.keys[0]))
                 del self.cache_data[self.keys[0]]
-                del self.keys[0]
+            del self.keys[0]
         self.keys.append(key)
         self.cache_data[key] = item
 
