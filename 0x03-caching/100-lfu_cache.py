@@ -8,12 +8,14 @@ class CacheNode:
     """ 0-Brosqhdkjsqhdnksjq """
 
     def __init__(self, key, val):
+        """ 0-Brosqhdkjsqhdnksjq """
         self.val = val
         self.key = key
         self.next = None
         self.prev = None
 
     def append(self, cache):
+        """ 0-Brosqhdkjsqhdnksjq """
         cache.prev = self
         self.next = cache
 
@@ -22,12 +24,14 @@ class FreqNode:
     """ 0-Brosqhdkjsqhdnksjq """
 
     def __init__(self, val):
+        """ 0-Brosqhdkjsqhdnksjq """
         self.frequency = val
         self.cache = None
         self.next = None
         self.prev = None
 
     def append(self, FreqNode):
+        """ 0-Brosqhdkjsqhdnksjq """
         FreqNode.prev = self
         if self.next:
             FreqNode.next = self.next
@@ -35,6 +39,7 @@ class FreqNode:
         self.next = FreqNode
 
     def preppend(self, FreqNode):
+        """ 0-Brosqhdkjsqhdnksjq """
         FreqNode.next = self
         if self.prev:
             FreqNode.prev = self.prev
@@ -42,6 +47,7 @@ class FreqNode:
         self.prev = FreqNode
 
     def insertCache(self, cache):
+        """ 0-Brosqhdkjsqhdnksjq """
         itr = self.cache
         if not itr:
             self.cache = cache
@@ -53,6 +59,7 @@ class FreqNode:
             itr = itr.next
 
     def removeCache(self, key):
+        """ 0-Brosqhdkjsqhdnksjq """
         itr = self.cache
         while itr:
             if itr.key == key:
@@ -74,10 +81,13 @@ class FreqNode:
 
 
 class FreqList:
+    """ 0-Brosqhdkjsqhdnksjq """
     def __init__(self):
+        """ 0-Brosqhdkjsqhdnksjq """
         self.head = FreqNode(0)
 
     def insertCache(self, freq, cache):
+        """ 0-Brosqhdkjsqhdnksjq """
         itr = self.head
         while itr:
             if itr.frequency == freq:
@@ -95,6 +105,7 @@ class FreqList:
             itr = itr.next
 
     def getFrequency(self, key):
+        """ 0-Brosqhdkjsqhdnksjq """
         itr = self.head
         while itr:
             itrc = itr.cache
@@ -106,6 +117,7 @@ class FreqList:
         return 0
 
     def getCacheNumAtFreq(self, freq):
+        """ 0-Brosqhdkjsqhdnksjq """
         itr = self.head
         i = 0
         while itr:
@@ -119,6 +131,7 @@ class FreqList:
         return i
 
     def removeLRUCache(self, freq):
+        """ 0-Brosqhdkjsqhdnksjq """
         itr = self.head
         while itr:
             if itr.frequency == freq:
@@ -132,6 +145,7 @@ class FreqList:
             itr = itr.next
 
     def updateCache(self, key, value):
+        """ 0-Brosqhdkjsqhdnksjq """
         itr = self.head
         newFreq = self.getFrequency(key) + 1
         while itr:
@@ -141,6 +155,7 @@ class FreqList:
         self.insertCache(newFreq, CacheNode(key, value))
 
     def removeLFUCache(self):
+        """ 0-Brosqhdkjsqhdnksjq """
         itr = self.head
         while itr:
             if self.getCacheNumAtFreq(itr.frequency) > 1:
@@ -148,6 +163,7 @@ class FreqList:
             itr = itr.next
 
     def printFreq(self):
+        """ 0-Brosqhdkjsqhdnksjq """
         itr = self.head
         while itr:
             print(itr.frequency, end="")
