@@ -159,7 +159,7 @@ class FreqList:
         """ 0-Brosqhdkjsqhdnksjq """
         itr = self.head
         while itr:
-            if self.getCacheNumAtFreq(itr.frequency) > 1:
+            if self.getCacheNumAtFreq(itr.frequency) > 0:
                 return self.removeLRUCache(itr.frequency)
             itr = itr.next
 
@@ -197,8 +197,8 @@ class LFUCache(BaseCaching):
                 # self.freq_list.printFreq()
                 # print(self.cache_data)
                 # print("=====================================")
-                self.freq_list.insertCache(1, CacheNode(key, item))
                 removed = self.freq_list.removeLFUCache()
+                self.freq_list.insertCache(1, CacheNode(key, item))
                 del self.cache_data[removed]
                 self.cache_data[key] = item
                 print("DISCARD: {}".format(removed))
