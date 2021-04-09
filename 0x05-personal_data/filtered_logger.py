@@ -33,9 +33,8 @@ class RedactingFormatter(logging.Formatter):
 def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
     """ Braaaaaahsqqdsqdsqdsq """
-    return (text
-            if text.split("=")[0] not in fields
-            else re.sub("=(.*)$", "=" + redaction, text)
+    return (separator.join(text if text.split("=")[0] not in fields
+            else re.sub("=(.*)$", "=" + redaction, text))
             for text in message.split(separator))
 
 
