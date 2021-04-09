@@ -40,9 +40,11 @@ def filter_datum(fields: List[str], redaction: str,
 
 
 def get_logger() -> logging.Logger:
-    stream_handler = logging.StreamHandler.emit(RedactingFormatter)
+    """ Braaaaaahsqqdsqdsqdsq """
+
     formatter = RedactingFormatter(PII_FIELDS)
-    stream_handler.setLevel(logging.INFO).setFormatter(formatter)
+    stream_handler = logging.StreamHandler.setLevel(
+        logging.INFO).setFormatter(formatter)
 
     logger = logging.getLogger("user_data").setLevel(
         20).addHandler(stream_handler)
