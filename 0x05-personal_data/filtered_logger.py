@@ -26,7 +26,8 @@ class RedactingFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         """ Braaaaaahsqqdsqdsqdsq """
         message = logging.Formatter(self.FORMAT).format(record)
-        return filter_datum(self.fields, self.REDACTION, message, self.SEPARATOR)
+        return filter_datum(self.fields, self.REDACTION, message,
+                            self.SEPARATOR)
 
 
 def filter_datum(fields: List[str], redaction: str,
@@ -47,6 +48,6 @@ def get_logger() -> logging.Logger:
         logging.INFO).setFormatter(formatter)
 
     logger = logging.getLogger("user_data").setLevel(
-        20).addHandler(stream_handler)
+        logging.INFO).addHandler(stream_handler)
     logger.propagate = False
     return logger
