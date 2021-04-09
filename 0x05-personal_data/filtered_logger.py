@@ -44,10 +44,12 @@ def get_logger() -> logging.Logger:
     """ Braaaaaahsqqdsqdsqdsq """
 
     formatter = RedactingFormatter(PII_FIELDS)
-    stream_handler = logging.StreamHandler().setLevel(
-        logging.INFO).setFormatter(formatter)
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.INFO)
+    stream_handler.setFormatter(formatter)
 
-    logger = logging.getLogger("user_data").setLevel(logging.INFO)
+    logger = logging.getLogger("user_data")
+    logger.setLevel(logging.INFO)
     logger.propagate = False
     logger.addHandler(stream_handler)
 
@@ -58,10 +60,28 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     """ Braaaaaahsqqdsqdsqdsq """
 
     db_username = os.getenv('PERSONAL_DATA_DB_USERNAME', "root")
-    db_password = os.getenv('PERSONAL_DATA_DB_PASSWORD', "")
+    db_password = os.getenv('PERSONAL_DATA_DB_PASSWORD', "ImmaBombYou666")
     db_host = os.getenv('PERSONAL_DATA_DB_HOST', "localhost")
-    db_name = os.getenv('PERSONAL_DATA_DB_NAME')
+    db_name = os.getenv('PERSONAL_DATA_DB_NAME', "my_db")
     return mysql.connector.connect(user=db_username,
                                    password=db_password,
                                    host=db_host,
                                    database=db_name)
+
+
+def main() -> None:
+    cnx = get_db()
+    cursor = cnx.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM users")
+    records = cursor.fetchall()
+    logger = get_logger()
+
+    for record in records:
+        message = ""
+        for k, v in record.items():
+            message += k + "=" + str(v) + ";"
+        logger.info(message)
+
+
+if __name__ == '__main__':
+    main()
