@@ -7,7 +7,7 @@ import re
 
 
 def filter_datum(fields: List[str], redaction: str,
-                 message: str, separator: str):
+                 message: str, separator: str) -> str:
     """ Braaaaaahsqqdsqdsqdsq """
     r = []
     for text in message.split(separator):
