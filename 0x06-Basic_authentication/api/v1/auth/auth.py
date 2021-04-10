@@ -16,7 +16,7 @@ class Auth:
         """
             Checks if authentication is required
         """
-        if path is None:
+        if path is None or excluded_paths is None:
             return True
         return not any(path in ex_path for ex_path in excluded_paths)
 
