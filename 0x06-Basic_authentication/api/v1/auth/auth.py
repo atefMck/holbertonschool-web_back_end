@@ -34,3 +34,10 @@ class Auth:
             Undetirmined
         """
         return None
+
+
+class BasicAuth(Auth):
+    """
+        Basic authentication Class
+    """
+    pass
