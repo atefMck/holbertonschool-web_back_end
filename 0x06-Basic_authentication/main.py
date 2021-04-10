@@ -5,8 +5,8 @@ import re
 from api.v1.auth.basic_auth import BasicAuth
 
 a = BasicAuth()
-t = a.require_auth("/api/v1/status", ["/api/v1/stat*"])
-s = re.search("/api/v1/stat*", "/api/v1/status")
+t = a.require_auth("/api/v1/usual", ["/api/v1/us*"])
+s = re.search("/api/v1/us*", "/api/v1/usual")
 print(s)
 print(t)
 
