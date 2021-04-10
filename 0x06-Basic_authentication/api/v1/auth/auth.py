@@ -19,7 +19,10 @@ class Auth:
         """
         if path is None or excluded_paths is None:
             return True
-        return not any(re.search(ex_path, path) for ex_path in excluded_paths)
+        return not any(True
+                       if re.search(ex_path, path) is not None
+                       else False
+                       for ex_path in excluded_paths)
 
     def authorization_header(self, request=None) -> str:
         """
