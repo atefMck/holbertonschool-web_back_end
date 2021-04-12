@@ -43,7 +43,7 @@ class Auth:
             Undetirmined
         """
         return None
-    
+
     def session_cookie(self, request=None):
         """  
             Returns a cookie value from a request
