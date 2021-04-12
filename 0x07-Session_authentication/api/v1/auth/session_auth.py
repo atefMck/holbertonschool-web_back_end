@@ -27,7 +27,6 @@ class SessionAuth(Auth):
         """
         Returns a User ID based on a Session ID:
         """
-        if session_id is None or type(session_id) is not str:
+        if session_id is None or type(str(session_id)) is not str:
             return None
-        user_id = self.user_id_by_session_id.get(session_id)
-        return user_id
+        return self.user_id_by_session_id.get(session_id)
