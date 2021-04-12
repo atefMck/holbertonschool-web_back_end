@@ -10,5 +10,4 @@ class SessionAuth(Auth):
     """
         Session authentication Class
     """
-
-    
+    pass
