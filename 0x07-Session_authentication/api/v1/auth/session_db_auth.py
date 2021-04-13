@@ -16,6 +16,8 @@ class SessionDBAuth(SessionExpAuth):
         """
             Create session with expiration in a file storage
         """
+        if user_id is None:
+            return None
         session_id = super().create_session(user_id)
         data = {
             'user_id': user_id,
@@ -33,7 +35,7 @@ class SessionDBAuth(SessionExpAuth):
             return None
         UserSession.load_from_file()
         user = UserSession.search(attributes={'session_id': session_id})
-        if user is None:
+        if user is None or len(user) == 0:
             return None
         if (datetime.timedelta(seconds=self.session_duration)
             + user[0].created_at
