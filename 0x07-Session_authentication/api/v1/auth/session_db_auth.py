@@ -49,11 +49,12 @@ class SessionDBAuth(SessionExpAuth):
             from the request cookie
         """
         if request is None:
-            return
+            return False
         session_id = self.session_cookie(request)
         if session_id is None:
-            return
+            return False
         user = UserSession.search(attributes={'session_id': session_id})
         if user is None or len(user) == 0:
-            return
+            return False
         user[0].remove()
+        return True
