@@ -32,7 +32,8 @@ def session_login():
     return res
 
 
-@app_views.route('/auth_session/logout', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/auth_session/logout',
+                 methods=['DELETE'], strict_slashes=False)
 def session_logout():
     """ Destroys a session
     """
