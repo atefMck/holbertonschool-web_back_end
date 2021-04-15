@@ -4,7 +4,6 @@ Auth module
 """
 
 
-from app import AUTH
 from sqlalchemy.orm.exc import NoResultFound
 
 from db import DB
