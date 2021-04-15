@@ -36,7 +36,7 @@ class Auth:
         """Registers a user in database
         """
         try:
-            user = self._db.find_user_by(email=email)
+            self._db.find_user_by(email=email)
             raise ValueError(
                 "User {} already exists".format(email))
         except NoResultFound:
