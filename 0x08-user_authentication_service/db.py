@@ -61,11 +61,11 @@ class DB:
         """
         valid_args = ['id', 'email', 'hashed_password',
                       'session_id', 'reset_token']
-        for k in kwargs.keys():
-            if k not in valid_args:
-                raise ValueError
         user = self.find_user_by(id=user_id)
         if user:
-            user.__dict__.update(kwargs)
+            for k in kwargs.keys():
+                if k not in valid_args:
+                    raise ValueError
+                setattr(user, k, kwargs[k])
             self._session.commit()
         return None
