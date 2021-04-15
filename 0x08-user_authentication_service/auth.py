@@ -4,6 +4,7 @@ Auth module
 """
 
 
+from app import AUTH
 from sqlalchemy.orm.exc import NoResultFound
 
 from db import DB
@@ -72,5 +73,23 @@ class Auth:
                 session_id = _generate_uuid()
                 self._db.update_user(user.id, session_id=session_id)
                 return session_id
+        except Exception:
+            return None
+
+    def get_user_from_session_id(self, session_id: str) -> User:
+        """Get user from session id
+        """
+        try:
+            user = self._db.find_user_by(session_id=session_id)
+            return user if user else None
+        except Exception:
+            return None
+
+    def destroy_session(self, user_id: int):
+        """Destroys user session
+        """
+        try:
+            self._db.update_user(user_id, session_id=None)
+            return None
         except Exception:
             return None
