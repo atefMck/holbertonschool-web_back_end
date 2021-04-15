@@ -55,16 +55,22 @@ class DB:
             raise NoResultFound
         return user
 
-    def update_user(self, user_id, **kwargs) -> User:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """
-        Updates User
+        Find user by user_id and updates its data.
+        Returns None
         """
-        valid_args = ['id', 'email', 'hashed_password',
-                      'session_id', 'reset_token']
-        user = self.find_user_by(id=user_id)
-        if user:
-            for k, v in kwargs.items():
-                if k not in valid_args:
-                    raise ValueError
-                setattr(user, k, v)
-            self._session.commit()
+        valid_args = [
+            'id', 'email', 'hashed_password', 'session_id', 'reset_token'
+        ]
+        try:
+            user = self.find_user_by(id=user_id)
+            if user:
+                for k, v in kwargs.items():
+                    if k not in valid_args:
+                        raise ValueError
+                    else:
+                        setattr(user, k, v)
+                self._session.commit()
+        except Exception as e:
+            raise e
