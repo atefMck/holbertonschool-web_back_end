@@ -8,6 +8,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from db import DB
 import bcrypt
+import uuid
 
 from user import User
 
@@ -55,3 +56,8 @@ class Auth:
                 return False
         except Exception:
             return False
+
+    def _generate_uuid() -> str:
+        """Generates uuid
+        """
+        return str(uuid.uuid4())
