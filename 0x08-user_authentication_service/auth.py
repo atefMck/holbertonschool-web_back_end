@@ -31,8 +31,8 @@ class Auth:
         self._db = DB()
 
     def register_user(
-        self,
-        email: str, password:str) -> User:
+            self,
+            email: str, password: str) -> User:
         """Registers a user in database
         """
         try:
@@ -41,4 +41,3 @@ class Auth:
                 "User {} already exists".format(email))
         except NoResultFound:
             return self._db.add_user(email, _hash_password(password))
-        
