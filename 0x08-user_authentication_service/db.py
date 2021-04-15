@@ -68,4 +68,3 @@ class DB:
                     raise ValueError
                 setattr(user, k, kwargs[k])
             self._session.commit()
-        return None
