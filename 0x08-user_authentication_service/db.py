@@ -67,4 +67,5 @@ class DB:
         user = self.find_user_by(id=user_id)
         if user:
             user.__dict__.update(kwargs)
+            self._session.commit()
         return None
