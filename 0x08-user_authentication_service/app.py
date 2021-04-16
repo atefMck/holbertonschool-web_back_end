@@ -66,7 +66,7 @@ def logout():
 
 @app.route('/profile', methods=['GET'], strict_slashes=False)
 def profile():
-    """ Logout method """
+    """ Show profile """
     session_id = request.cookies.get('session_id')
     user = AUTH.get_user_from_session_id(session_id)
     if user is None or session_id is None:
