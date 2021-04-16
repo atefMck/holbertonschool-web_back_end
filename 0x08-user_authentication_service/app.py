@@ -8,6 +8,7 @@ from flask import Flask, jsonify, abort, redirect
 from flask.globals import request
 from flask.helpers import make_response
 from flask.wrappers import Response
+from sqlalchemy.sql.base import PARSE_AUTOCOMMIT
 from auth import Auth
 
 AUTH = Auth()
@@ -56,11 +57,11 @@ def logout():
     """ Logout method """
     session_id = request.cookies.get('session_id')
     user = AUTH.get_user_from_session_id(session_id)
-    if user:
+    if user is None:
+        abort(403)
+    else:
         AUTH.destroy_session(user.id)
         return redirect("/")
-    else:
-        abort(403)
 
 
 if __name__ == "__main__":
