@@ -90,7 +90,6 @@ class Auth:
         """Destroys user session
         """
         try:
-            self._db.update_user(user_id, session_id=None)
-            return None
+            return self._db.update_user(user_id, session_id=None)
         except Exception:
             return None
