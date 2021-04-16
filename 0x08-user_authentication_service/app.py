@@ -7,8 +7,6 @@ App module
 from flask import Flask, jsonify, abort, redirect
 from flask.globals import request
 from flask.helpers import make_response
-from flask.wrappers import Response
-from sqlalchemy.sql.base import PARSE_AUTOCOMMIT
 from auth import Auth
 
 AUTH = Auth()
