@@ -66,7 +66,7 @@ def logout():
 
 @app.route('/profile', methods=['GET'], strict_slashes=False)
 def profile():
-    """ Show profile """
+    """ Shows profile """
     session_id = request.cookies.get('session_id')
     user = AUTH.get_user_from_session_id(session_id)
     if user is None or session_id is None:
@@ -77,7 +77,7 @@ def profile():
 
 @app.route('/reset_password', methods=['POST'], strict_slashes=False)
 def get_reset_password_token():
-    """ Show profile """
+    """ Generates reset token """
     email = request.form['email']
     try:
         reset_token = AUTH.get_reset_password_token(email)
@@ -88,7 +88,7 @@ def get_reset_password_token():
 
 @app.route('/reset_password', methods=['PUT'], strict_slashes=False)
 def update_password():
-    """ Show profile """
+    """ Updates password """
     email = request.form['email']
     reset_token = request.form['reset_token']
     new_password = request.form['new_password']
