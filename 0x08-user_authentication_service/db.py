@@ -57,7 +57,7 @@ class DB:
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """
-        Updates User
+        Updates User and saves in database
         """
         valid_args = ['id', 'email', 'hashed_password',
                       'session_id', 'reset_token']
