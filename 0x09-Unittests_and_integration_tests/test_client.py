@@ -69,12 +69,14 @@ class TestGithubOrgClient(unittest.TestCase):
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """ GithubOrgClient integration testing class """
 
+    @classmethod
     def setUpClass(self):
         """ GithubOrgClient integration testing patcher setup """
         self.get_patcher = patch('requests.get',
                                  side_effect=[org_payload, repos_payload])
         self.get_patcher.start()
 
+    @classmethod
     def tearDownClass(self):
         """ GithubOrgClient integration testing patcher destroy """
         self.get_patcher.stop()
