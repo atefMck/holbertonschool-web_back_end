@@ -48,3 +48,14 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(result, second_patch.return_value)
             first_patch.assert_called_once()
             second_patch.assert_called_once()
+
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False)
+    ])
+    def test_has_license(self, repo, license, has_license):
+        """ GithubOrgClient.has_license unittesting """
+
+        test_class = GithubOrgClient("BigBrain")
+        self.assertEqual(test_class.has_license(repo, license),
+                         has_license)
