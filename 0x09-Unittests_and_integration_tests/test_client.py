@@ -5,7 +5,8 @@
 from client import GithubOrgClient
 import unittest
 from unittest.mock import patch, PropertyMock
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
+from fixtures import TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -59,3 +60,21 @@ class TestGithubOrgClient(unittest.TestCase):
         test_class = GithubOrgClient("BigBrain")
         self.assertEqual(test_class.has_license(repo, license),
                          has_license)
+
+
+@parameterized_class(
+    ('org_payload', 'repos_payload', 'expected_repos', 'apache2_repos'),
+    TEST_PAYLOAD
+)
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """ GithubOrgClient integration testing class """
+
+    def setUpClass(self):
+        """ GithubOrgClient integration testing patcher setup """
+        self.get_patcher = patch('requests.get',
+                                 side_effect=[org_payload, repos_payload])
+        self.get_patcher.start()
+
+    def tearDownClass(self):
+        """ GithubOrgClient integration testing patcher destroy """
+        self.get_patcher.stop()
