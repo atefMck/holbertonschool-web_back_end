@@ -73,10 +73,17 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def setUpClass(self):
         """ GithubOrgClient integration testing patcher setup """
         self.get_patcher = patch('requests.get',
-                                 side_effect=[org_payload, repos_payload])
+                                 side_effect=[self.org_payload,
+                                              self.repos_payload])
         self.get_patcher.start()
 
     @classmethod
     def tearDownClass(self):
         """ GithubOrgClient integration testing patcher destroy """
         self.get_patcher.stop()
+    
+    def test_public_repos(self):
+        """ GithubOrgClient integration testing public_repos """
+        test_class = GithubOrgClient("BigBrain")
+        self.assertEqual(test_class.org, self.org_payload)
+        self.assertEqual(test_class.repos_payload, self.repos_payload)
