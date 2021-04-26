@@ -51,6 +51,7 @@ class TestMemoize(unittest.TestCase):
     """ memoize decorator unit testing class """
 
     def test_memoize(self):
+        """ memoize decorator result and number of calls testing method """
         class TestClass:
             def a_method(self):
                 return 42
