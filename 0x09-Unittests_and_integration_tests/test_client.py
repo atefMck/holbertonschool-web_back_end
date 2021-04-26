@@ -70,20 +70,29 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     """ GithubOrgClient integration testing class """
 
     @classmethod
-    def setUpClass(self):
+    def setUpClass(cls):
         """ GithubOrgClient integration testing patcher setup """
-        self.get_patcher = patch('requests.get',
-                                 side_effect=[self.org_payload,
-                                              self.repos_payload])
-        self.get_patcher.start()
+        cls.get_patcher = patch('requests.get')
+        cls.mock = cls.get_patcher.start()
+        cls.mock.return_value.json.side_effect = [
+            cls.org_payload, cls.repos_payload,
+            cls.org_payload, cls.repos_payload,
+        ]
 
     @classmethod
-    def tearDownClass(self):
+    def tearDownClass(cls):
         """ GithubOrgClient integration testing patcher destroy """
-        self.get_patcher.stop()
-    
+        cls.get_patcher.stop()
+
     def test_public_repos(self):
         """ GithubOrgClient integration testing public_repos """
         test_class = GithubOrgClient("BigBrain")
-        self.assertEqual(test_class.org, self.org_payload)
-        self.assertEqual(test_class.repos_payload, self.repos_payload)
+        self.assertEqual(test_class.public_repos(), self.expected_repos)
+        self.assertEqual(test_class.public_repos("random"), [])
+
+    def test_public_repos_with_license(self):
+        """ GithubOrgClient integration testing public_repos with
+            a valid licence"""
+        test_class = GithubOrgClient("BigBrain")
+        self.assertEqual(test_class.public_repos(license="apache-2.0"),
+                         self.apache2_repos)
