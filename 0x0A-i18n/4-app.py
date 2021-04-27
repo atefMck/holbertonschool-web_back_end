@@ -24,7 +24,6 @@ def hello_world():
     return render_template("3-index.html")
 
 
-
 @babel.localeselector
 def get_locale():
     """ Gets the best matching language for user """
