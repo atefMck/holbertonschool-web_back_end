@@ -21,13 +21,14 @@ babel = Babel(app)
 @app.route("/")
 def hello_world():
     """ Handle default route """
-    return render_template("4-index.html")
+    return render_template("3-index.html")
+
 
 
 @babel.localeselector
 def get_locale():
     """ Gets the best matching language for user """
-    locale = request.args['locale']
+    locale = request.args.get('locale')
     if locale and locale in Config.LANGUAGES:
         return locale
-    return request.accept_languages.best_match(app.config.LANGUAGES)
+    return request.accept_languages.best_match(Config.LANGUAGES)
