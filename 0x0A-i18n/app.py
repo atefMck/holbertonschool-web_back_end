@@ -2,10 +2,12 @@
 """ Flask application """
 
 
+from datetime import datetime
 from flask import Flask, render_template, request, g
 from flask_babel import Babel
 from pytz import timezone as tz
 from pytz.exceptions import UnknownTimeZoneError
+import locale
 
 
 users = {
@@ -31,8 +33,20 @@ babel = Babel(app)
 @app.route("/")
 def hello_world():
     """ Handle default route """
-    
-    return render_template("6-index.html", timestr=timestr)
+    return render_template("index.html")
+
+
+@babel.timezoneselector
+def get_timezone():
+    timezone = request.args.get('timezone')
+    try:
+        if timezone:
+            return tz(timezone)
+        if hasattr(g, "user"):
+            if g.user.get('timezone'):
+                return tz(g.user.get('timezone'))
+    except UnknownTimeZoneError:
+        return tz(Config.BABEL_DEFAULT_TIMEZONE)
 
 
 @babel.localeselector
@@ -53,6 +67,18 @@ def before_request():
     user = get_user()
     if user:
         g.user = user
+    localee = get_locale()
+    local_time = datetime.now(get_timezone())
+    if localee == "en":
+        locale.setlocale(locale.LC_TIME, "en_EN")
+        g.local_time = local_time.strftime(
+        "%b %d, %y, %I:%M:%S %p"
+    )
+    elif localee == "fr":
+        locale.setlocale(locale.LC_TIME, "fr_FR")
+        g.local_time = local_time.strftime(
+        "%d %B %y à %H:%M:%S"
+    )
 
 
 def get_user():
