@@ -51,7 +51,7 @@ def before_request():
 
 def get_user():
     """ Returns user from request """
-    user_id = int(request.args.get('login_as'))
-    if user_id and user_id in users.keys():
+    user_id = request.args.get('login_as')
+    if user_id and int(user_id) in users.keys():
         return users.get(user_id)
     return None
