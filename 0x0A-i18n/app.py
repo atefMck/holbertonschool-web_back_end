@@ -31,20 +31,8 @@ babel = Babel(app)
 @app.route("/")
 def hello_world():
     """ Handle default route """
-    return render_template("6-index.html")
-
-
-@babel.timezoneselector
-def get_timezone():
-    timezone = request.args.get('timezone')
-    try:
-        if timezone:
-            return tz(timezone)
-        if hasattr(g, "user"):
-            if g.user.get('timezone'):
-                return tz(g.user.get('timezone'))
-    except UnknownTimeZoneError:
-        return tz(Config.BABEL_DEFAULT_TIMEZONE)
+    
+    return render_template("6-index.html", timestr=timestr)
 
 
 @babel.localeselector
