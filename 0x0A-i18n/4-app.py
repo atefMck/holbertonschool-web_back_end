@@ -21,7 +21,7 @@ babel = Babel(app)
 @app.route("/")
 def hello_world():
     """ Handle default route """
-    return render_template("3-index.html")
+    return render_template("4-index.html")
 
 
 @babel.localeselector

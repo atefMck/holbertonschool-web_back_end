@@ -27,4 +27,4 @@ def hello_world():
 @babel.localeselector
 def get_locale():
     """ Gets the best matching language for user """
-    return request.accept_languages.best_match(app.config.LANGUAGES)
+    return request.accept_languages.best_match(Config.LANGUAGES)
