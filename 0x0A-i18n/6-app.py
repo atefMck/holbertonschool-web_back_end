@@ -40,7 +40,7 @@ def get_locale():
         return locale
     if hasattr(g, "user"):
         if g.user.get('locale') in Config.LANGUAGES:
-            return g.user.get('locale') 
+            return g.user.get('locale')
     return request.accept_languages.best_match(Config.LANGUAGES)
 
 
