@@ -9,6 +9,23 @@ import sys
 from functools import wraps
 
 
+def replay(fn):
+    """ display the history of calls of a particular function """
+    store = redis.Redis()
+    count_key = fn.__qualname__
+    input_key = count_key + ":inputs"
+    output_key = count_key + ":outputs"
+    count = int.from_bytes(store.get(count_key), sys.byteorder)
+    print("{} was called {} times:".format(count_key, count))
+    inputs = store.lrange(input_key, 0, count)
+    outputs = store.lrange(output_key, 0, count)
+    for input, output in zip(inputs, outputs):
+        input = input.decode("utf-8")
+        output = output.decode("utf-8")
+        print("{}(*{},)) -> {}".format(count_key, input, output))
+
+
+
 def count_calls(method: Callable) -> Callable:
     """ Calls counter decorator """
     key = method.__qualname__
@@ -28,7 +45,7 @@ def call_history(method: Callable) -> Callable:
 
     @wraps(method)
     def wrapper(self, *args, **kwargs):
-        """ Method wrapper to incr count """
+        """ Method wrapper to push history in store """
         self._redis.rpush(input_key, str(args))
         data = method(self, *args, **kwargs)
         self._redis.rpush(output_key, str(data))
