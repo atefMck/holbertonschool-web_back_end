@@ -25,7 +25,8 @@ class Cache:
     def get(self, key: str,
             fn: Optional[Callable]) -> Union[str, bytes, int, float]:
         """ Get originaltype data """
-        return fn(self._redis.get(key)) if fn else self._redis.get(key)
+        data = self._redis.get(key)
+        return fn(data) if fn is not None else data
 
     def get_str(self, value):
         """ Converts bytes to string """
