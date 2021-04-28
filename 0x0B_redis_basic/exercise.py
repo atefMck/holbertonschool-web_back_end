@@ -15,7 +15,7 @@ def replay(fn):
     count_key = fn.__qualname__
     input_key = count_key + ":inputs"
     output_key = count_key + ":outputs"
-    count = int.from_bytes(store.get(count_key), sys.byteorder)
+    count = store.get(count_key).decode("utf-8")
     print("{} was called {} times:".format(count_key, count))
     inputs = store.lrange(input_key, 0, count)
     outputs = store.lrange(output_key, 0, count)
@@ -23,7 +23,6 @@ def replay(fn):
         input = input.decode("utf-8")
         output = output.decode("utf-8")
         print("{}(*{},)) -> {}".format(count_key, input, output))
-
 
 
 def count_calls(method: Callable) -> Callable:
@@ -36,6 +35,7 @@ def count_calls(method: Callable) -> Callable:
         self._redis.incr(key)
         return method(self, *args, **kwargs)
     return wrapper
+
 
 def call_history(method: Callable) -> Callable:
     """ Calls call history decorator """
