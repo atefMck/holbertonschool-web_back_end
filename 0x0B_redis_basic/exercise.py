@@ -23,15 +23,14 @@ class Cache:
         return random_id
 
     def get(self, key: str,
-            fn: Optional[Callable]) -> Union[str, bytes, int, float]:
+            fn: Optional[Callable] = None) -> Union[str, bytes, int, float]:
         """ Get originaltype data """
-        data = self._redis.get(key)
-        return fn(data) if fn is not None else data
+        return fn(self._redis.get(key)) if fn else self._redis.get(key)
 
-    def get_str(self, value):
+    def get_str(self, value: bytes) -> str:
         """ Converts bytes to string """
         return value.decode("utf-8")
 
-    def get_int(self, value):
+    def get_int(self, value: bytes) -> str:
         """ Converts bytes to integer """
         return int.from_bytes(value, sys.byteorder)
