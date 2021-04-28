@@ -22,7 +22,7 @@ def replay(fn):
     for input, output in zip(inputs, outputs):
         input = input.decode("utf-8")
         output = output.decode("utf-8")
-        print("{}(*{},)) -> {}".format(count_key, input, output))
+        print("{}(*{}) -> {}".format(count_key, input, output))
 
 
 def count_calls(method: Callable) -> Callable:
