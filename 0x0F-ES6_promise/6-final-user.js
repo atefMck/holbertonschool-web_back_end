@@ -6,14 +6,14 @@ export default async function handleProfileSignUp(firstName, lastName, fileName)
   await signUpUser(firstName, lastName)
     .then(async (data) => {
       stats.push({
-        status: 'Resolved',
+        status: 'fulfilled',
         value: data,
       });
       await uploadPhoto(fileName);
     })
     .catch((err) => {
       stats.push({
-        status: 'Rejected',
+        status: 'rejected',
         value: err.toString(),
       });
     });
