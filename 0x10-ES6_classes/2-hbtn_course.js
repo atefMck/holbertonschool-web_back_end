@@ -1,5 +1,4 @@
 export default class HolbertonCourse {
-
   constructor(name, length, students) {
     if (typeof (name) !== 'string') throw TypeError('Name must be a string');
     if (typeof (length) !== 'number') throw TypeError('Length must be a number');
