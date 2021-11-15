@@ -1,87 +1,73 @@
 #!/usr/bin/env python3
-""" Braaaaaahsqqdsqdsqdsq """
-
-
-from typing import List
-import re
+"""Regex-ing"""
+import csv
 import logging
-import os
 import mysql.connector
-
-
+import os
+import re
+from typing import List
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
-
-
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class
         """
-
     REDACTION = "***"
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
-
     def __init__(self, fields: List[str]):
-        """ Braaaaaahsqqdsqdsqdsq """
+        """Constructor"""
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
-
     def format(self, record: logging.LogRecord) -> str:
-        """ Braaaaaahsqqdsqdsqdsq """
-        message = logging.Formatter(self.FORMAT).format(record)
-        return filter_datum(self.fields, self.REDACTION, message,
-                            self.SEPARATOR)
-
-
+        """Filter values from incoming log records"""
+        return filter_datum(self.fields, self.REDACTION,
+                            super().format(record), self.SEPARATOR)
 def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
-    """ Braaaaaahsqqdsqdsqdsq """
-    return (separator.join(text if text.split("=")[0] not in fields
-                           else re.sub("=(.*)$", "=" + redaction, text)
-                           for text in message.split(separator)))
-
-
+    """Returns the log message obfuscated"""
+    for field in fields:
+        message = re.sub(r'{}=.*?{}'.format(field, separator),
+                         '{}={}{}'.format(field, redaction, separator),
+                         message)
+    return message
 def get_logger() -> logging.Logger:
-    """ Braaaaaahsqqdsqdsqdsq """
-
-    formatter = RedactingFormatter(PII_FIELDS)
-    stream_handler = logging.StreamHandler()
-    stream_handler.setLevel(logging.INFO)
-    stream_handler.setFormatter(formatter)
-
+    """Returns a logging.Logger object"""
     logger = logging.getLogger("user_data")
     logger.setLevel(logging.INFO)
     logger.propagate = False
-    logger.addHandler(stream_handler)
-
+    ch = logging.StreamHandler()
+    ch.setFormatter(RedactingFormatter(PII_FIELDS))
+    logger.addHandler(ch)
     return logger
-
-
 def get_db() -> mysql.connector.connection.MySQLConnection:
-    """ Braaaaaahsqqdsqdsqdsq """
-
-    db_username = os.getenv('PERSONAL_DATA_DB_USERNAME', "root")
-    db_password = os.getenv('PERSONAL_DATA_DB_PASSWORD', "ImmaBombYou666")
-    db_host = os.getenv('PERSONAL_DATA_DB_HOST', "localhost")
-    db_name = os.getenv('PERSONAL_DATA_DB_NAME', "my_db")
-    return mysql.connector.connect(user=db_username,
-                                   password=db_password,
-                                   host=db_host,
-                                   database=db_name)
-
-
+    """Returns a connector to the database"""
+    dbUser = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
+    dbPassword = os.getenv('PERSONAL_DATA_DB_PASSWORD', ' ')
+    dbHost = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
+    dbName = os.getenv('PERSONAL_DATA_DB_NAME')
+    return mysql.connector.connection.MySQLConnection(user=dbUser,
+                                                      password=dbPassword,
+                                                      host=dbHost,
+                                                      database=dbName)
 def main() -> None:
-    cnx = get_db()
-    cursor = cnx.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM users")
-    records = cursor.fetchall()
+    """
+    Main
+    Returns a connector to the database
+    Returns a connector to the database
+    """
+    # connect
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+    num_fields = len(cursor.description)
+    fields_names = [i[0] for i in cursor.description]
     logger = get_logger()
-
-    for record in records:
-        message = ""
-        for k, v in record.items():
-            message += k + "=" + str(v) + ";"
-        logger.info(message)
-
-
-if __name__ == '__main__':
+    for profile in cursor:
+        message = ''
+        for element in range(num_fields):
+            msg += fields_names[element] + '=' + str(profile[element]) + ';'
+        logger.info(msg)
+    # close
+    cursor.close()
+    db.close()
+if __name__ == "__main__":
     main()
