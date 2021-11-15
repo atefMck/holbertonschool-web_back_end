@@ -137,7 +137,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
 
 
 def main() -> None:
-    """Main"""
+    """MainMainMainMainMainMainMainMainMainMain"""
     # connect
     db = get_db()
     cursor = db.cursor()
